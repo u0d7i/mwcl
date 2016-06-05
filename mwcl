@@ -1,0 +1,93 @@
+#!/bin/bash
+# mediawiki commandline
+
+# configuration
+URL="https://en.wikipedia.org/w" # server address
+BU="" # basic auth user, anonymous if empty
+BP="" # basic auth pass
+WU="" # wiki user, anonymous if empty
+WP="" # wiki pass
+
+# source external cfg and override if exists
+CFG="${HOME}/.mwcl.cfg"
+if [ -e "${CFG}" ]; then
+    . ${CFG}
+fi
+
+
+# functions
+usage(){
+  echo "usage: $(basename $0) <action> [title]"
+  echo "  actions:"
+  echo "    help           - this help"
+  echo "    list           - list articles"
+  echo "    dump <title>   - dump article"
+  echo "    edit <title>   - edit article"
+  echo "    delete <title> - delete article"
+  echo
+}
+
+dump_article(){
+  TITLE=$1
+  if [ -z "$TITLE" ]; then
+    echo "- No title provided"
+    usage
+    exit
+  fi
+  URL="${URL}/index.php?action=raw&title=${TITLE}"
+  OUT=$(${CMD} "${URL}")
+  if [ -z "$OUT" ]; then
+    echo "- No such article"
+  else
+    echo "$OUT"
+  fi
+}
+
+
+# actions
+if [ $# -lt 1 ]; then
+    usage
+    exit
+fi
+
+ACTION=$1
+shift
+TITLE="$@"
+TITLE=$(echo $TITLE | tr ' ' '_')
+
+CMD="curl -sS"
+# check for basic auth
+if [ -n "${BU}" ]; then
+    if [ -n "${BP}" ]; then
+        CMD="${CMD} -u ${BU}:${BP}"
+    else
+        CMD="${CMD} -u ${BU}"
+    fi
+fi
+
+if [ -n "${WU}" ]; then
+    echo "wiki auth not implemented yet"
+    exit
+fi
+
+case $ACTION in
+  help)
+    usage
+    ;;
+  list)
+    echo "not implemented yet"
+    ;;
+  dump)
+    dump_article "$TITLE"
+    ;;
+  edit)
+    echo "not implemented yet"
+    ;;
+  delete)
+    echo "not implemented yet"
+    ;;
+  *)
+    echo "- Unknown action: $ACTION"
+    usage
+esac
+
