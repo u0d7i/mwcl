@@ -27,6 +27,12 @@ usage(){
   echo
 }
 
+list_articles(){
+  URL="${URL}/api.php?action=query&list=allpages&aplimit=5000&format=json"
+  OUT=$(${CMD} "${URL}")
+   echo "$OUT"
+}
+
 dump_article(){
   TITLE=$1
   if [ -z "$TITLE" ]; then
@@ -75,7 +81,7 @@ case $ACTION in
     usage
     ;;
   list)
-    echo "not implemented yet"
+    list_articles
     ;;
   dump)
     dump_article "$TITLE"
