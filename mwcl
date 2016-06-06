@@ -30,7 +30,7 @@ usage(){
 list_articles(){
   URL="${URL}/api.php?action=query&list=allpages&aplimit=5000&format=json"
   OUT=$(${CMD} "${URL}")
-   echo "$OUT"
+  echo "$OUT" | jq -r ".query.allpages[] | .title"
 }
 
 dump_article(){
