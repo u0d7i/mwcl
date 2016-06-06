@@ -16,6 +16,19 @@ fi
 
 
 # functions
+deps(){
+  DEPS="curl jq"
+  OK=0
+  for cmd in ${DEPS}
+  do
+    if [ -z $(command -v ${cmd}) ]; then
+      echo "- ${cmd} not installed"
+      OK=-1
+    fi
+  done
+  return ${OK}
+}
+
 usage(){
   echo "usage: $(basename $0) <action> [title]"
   echo "  actions:"
@@ -49,6 +62,8 @@ dump_article(){
   fi
 }
 
+# prerequisites
+deps || exit
 
 # actions
 if [ $# -lt 1 ]; then
