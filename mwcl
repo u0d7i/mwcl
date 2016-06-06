@@ -87,7 +87,7 @@ if [ -n "${BU}" ]; then
 fi
 
 if [ -n "${WU}" ]; then
-    echo "wiki auth not implemented yet"
+    echo "- Wiki auth not implemented yet"
     exit
 fi
 
@@ -102,10 +102,10 @@ case $ACTION in
     dump_article "$TITLE"
     ;;
   edit)
-    echo "not implemented yet"
+    echo "- Not implemented yet"
     ;;
   delete)
-    echo "not implemented yet"
+    echo "- Not implemented yet"
     ;;
   *)
     echo "- Unknown action: $ACTION"
